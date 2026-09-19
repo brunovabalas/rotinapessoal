@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projeto 30 Dias — Bruno & Bruna</title>
+  <style>
+    :root{
+      --bg:#f5f7fb;
+      --card:#ffffff;
+      --text:#141821;
+      --muted:#6f7787;
+      --line:#e7eaf0;
+      --primary:#6c4cff;
+      --secondary:#12b886;
+      --danger:#ff5f67;
+      --gold:#c79a39;
+      --shadow:0 12px 34px rgba(26,31,44,.08);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--text);
+      background:linear-gradient(180deg,#fafbff 0,#f3f5fa 100%);
+    }
+    .app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+    aside{
+      background:#11131a;color:#fff;padding:28px 20px;position:sticky;top:0;height:100vh
+    }
+    .brand{font-size:22px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px}
+    .sub{color:#aeb4c2;font-size:13px;margin-bottom:28px}
+    nav button{
+      width:100%;border:0;background:transparent;color:#cfd4df;text-align:left;padding:12px 14px;
+      border-radius:12px;margin:4px 0;cursor:pointer;font-size:14px
+    }
+    nav button.active, nav button:hover{background:#20232e;color:#fff}
+    main{padding:34px;max-width:1500px;width:100%;margin:auto}
+    .hero{
+      background:linear-gradient(135deg,#161925,#262c40 55%,#402d8f);
+      color:#fff;border-radius:28px;padding:30px;box-shadow:var(--shadow);margin-bottom:24px
+    }
+    .hero h1{margin:0 0 8px;font-size:34px;letter-spacing:-1px}
+    .hero p{margin:0;color:#d7dbea;max-width:900px;line-height:1.6}
+    .grid{display:grid;gap:18px}
+    .g4{grid-template-columns:repeat(4,1fr)}
+    .g3{grid-template-columns:repeat(3,1fr)}
+    .g2{grid-template-columns:repeat(2,1fr)}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+    .metric{font-size:28px;font-weight:800;margin-top:8px}
+    .muted{color:var(--muted);font-size:13px;line-height:1.5}
+    .section{display:none}
+    .section.active{display:block}
+    h2{font-size:25px;letter-spacing:-.5px;margin:4px 0 18px}
+    h3{font-size:17px;margin:0 0 12px}
+    .pill{display:inline-flex;padding:7px 10px;border-radius:999px;background:#f0edff;color:#5e42d9;font-size:12px;font-weight:700}
+    .schedule-row{
+      display:grid;grid-template-columns:90px 170px 1fr;gap:14px;align-items:start;padding:14px 0;border-bottom:1px solid var(--line)
+    }
+    .time{font-weight:800;color:var(--primary)}
+    .tag{font-weight:700}
+    .workout-day{margin-bottom:16px}
+    .exercise{display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-bottom:1px dashed #eceef3;font-size:14px}
+    table{width:100%;border-collapse:collapse;font-size:14px}
+    th,td{padding:12px;border-bottom:1px solid var(--line);text-align:left}
+    th{color:#626b7c;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+    .note{padding:14px 16px;background:#f7f8fb;border-radius:14px;color:#586174;font-size:13px;line-height:1.55}
+    .alert{background:#fff4f4;color:#9f2c35;border:1px solid #ffd9dc}
+    .success{background:#f0fbf6;color:#166f52;border:1px solid #d7f2e6}
+    .checks label{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+    .checks input{width:18px;height:18px}
+    .profile{display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .bar{height:8px;background:#eceef4;border-radius:99px;overflow:hidden;margin-top:10px}
+    .bar span{display:block;height:100%;background:linear-gradient(90deg,var(--primary),var(--secondary));width:55%}
+    .meal-card ul{padding-left:18px;margin:8px 0 0}
+    .meal-card li{margin:7px 0}
+    .footer{color:#8a91a0;font-size:12px;text-align:center;margin:28px 0 10px}
+    @media(max-width:1050px){
+      .app{grid-template-columns:1fr}
+      aside{height:auto;position:relative}
+      nav{display:flex;overflow:auto;gap:6px}
+      nav button{min-width:max-content;width:auto}
+      .g4,.g3,.g2{grid-template-columns:1fr}
+      main{padding:18px}
+      .schedule-row{grid-template-columns:72px 1fr}
+      .schedule-row > div:last-child{grid-column:2}
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand">Projeto 30 Dias</div>
+    <div class="sub">Bruno & Bruna • Fé, saúde e disciplina</div>
+    <nav>
+      <button class="active" data-target="dashboard">Visão Geral</button>
+      <button data-target="rotina">Rotina</button>
+      <button data-target="dieta">Dieta & Cardápio</button>
+      <button data-target="treino-bruno">Treino Bruno</button>
+      <button data-target="treino-bruna">Treino Bruna</button>
+      <button data-target="calendario">Calendário & IA</button>
+      <button data-target="progresso">Progresso</button>
+    </nav>
+  </aside>
+
+  <main>
+    <section id="dashboard" class="section active">
+      <div class="hero">
+        <span class="pill">30 dias de consistência</span>
+        <h1>Secar, definir e construir rotina juntos.</h1>
+        <p>O foco é reduzir gordura corporal, preservar massa muscular, melhorar condicionamento e criar uma rotina sustentável. Não existe redução localizada de gordura abdominal: o trabalho combina déficit calórico, musculação, cardio, passos, sono e consistência.</p>
+      </div>
+
+      <div class="grid g4">
+        <div class="card"><div class="muted">Bruno</div><div class="metric">80 kg</div><div class="muted">1,70 m • ~1.900 kcal/dia</div></div>
+        <div class="card"><div class="muted">Bruna</div><div class="metric">65 kg</div><div class="muted">1,60 m • ~1.500 kcal/dia</div></div>
+        <div class="card"><div class="muted">Meta de passos</div><div class="metric">8–10 mil</div><div class="muted">Todos os dias</div></div>
+        <div class="card"><div class="muted">Sono</div><div class="metric">7h30–8h</div><div class="muted">Meta: dormir ~23h</div></div>
+      </div>
+
+      <div class="grid g2" style="margin-top:18px">
+        <div class="card">
+          <h3>Princípios do plano</h3>
+          <div class="checks">
+            <label><input type="checkbox"> Devocional antes do celular e do trabalho</label>
+            <label><input type="checkbox"> Proteína em todas as refeições principais</label>
+            <label><input type="checkbox"> Musculação 5x por semana</label>
+            <label><input type="checkbox"> Cardio fracionado no treino</label>
+            <label><input type="checkbox"> 8–10 mil passos por dia</label>
+            <label><input type="checkbox"> 1 refeição flexível por semana</label>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Estratégia de definição</h3>
+          <p class="muted">Musculação vem primeiro para preservar e construir massa magra. O cardio entra em blocos curtos para aumentar o gasto energético sem destruir a performance.</p>
+          <div class="note success">Estrutura sugerida: 8–10 min de cardio leve no início + musculação + 10–20 min de cardio no final. Em 2 dias da semana, pode haver um bloco extra de 5–8 min entre grupos musculares.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="rotina" class="section">
+      <h2>Rotina diária base — segunda a sexta</h2>
+      <div class="card">
+        <div class="schedule-row"><div class="time">07:00</div><div class="tag">Acordar</div><div class="muted">Água, higiene e evitar redes sociais logo ao despertar.</div></div>
+        <div class="schedule-row"><div class="time">07:10</div><div class="tag">Devocional</div><div class="muted">20–25 min de oração, leitura bíblica e alinhamento do dia com Deus.</div></div>
+        <div class="schedule-row"><div class="time">07:35</div><div class="tag">Café rápido</div><div class="muted">Refeição leve e fácil de digerir antes do treino.</div></div>
+        <div class="schedule-row"><div class="time">08:00</div><div class="tag">Treino</div><div class="muted">60–75 min incluindo aquecimento, musculação e cardio.</div></div>
+        <div class="schedule-row"><div class="time">09:20</div><div class="tag">Pós-treino</div><div class="muted">Banho + lanche rico em proteína.</div></div>
+        <div class="schedule-row"><div class="time">10:00</div><div class="tag">Trabalho</div><div class="muted">Bloco de foco. Levantar 3–5 min a cada 60–90 min.</div></div>
+        <div class="schedule-row"><div class="time">12:30</div><div class="tag">Almoço</div><div class="muted">Proteína + carboidrato controlado + feijão + grande volume de vegetais.</div></div>
+        <div class="schedule-row"><div class="time">13:15</div><div class="tag">Caminhada curta</div><div class="muted">10–15 min após o almoço sempre que possível.</div></div>
+        <div class="schedule-row"><div class="time">13:30</div><div class="tag">Trabalho</div><div class="muted">Segundo bloco profissional.</div></div>
+        <div class="schedule-row"><div class="time">16:30</div><div class="tag">Lanche</div><div class="muted">Proteína + fruta, ou sanduíche leve.</div></div>
+        <div class="schedule-row"><div class="time">17:00</div><div class="tag">Trabalho</div><div class="muted">Último bloco de execução do dia.</div></div>
+        <div class="schedule-row"><div class="time">19:30</div><div class="tag">Jantar / lazer</div><div class="muted">Jantar leve. Depois, tempo de casal, igreja, passeio ou descanso.</div></div>
+        <div class="schedule-row"><div class="time">22:15</div><div class="tag">Desacelerar</div><div class="muted">Reduzir luz/telas, preparar o dia seguinte e registrar hábitos.</div></div>
+        <div class="schedule-row"><div class="time">23:00</div><div class="tag">Dormir</div><div class="muted">Prioridade para recuperação, regulação de apetite e performance.</div></div>
+      </div>
+      <div class="note" style="margin-top:16px">Sábado e domingo: sem musculação obrigatória. Manter passos, caminhada de 40–60 min, alimentação controlada e espaço para uma refeição flexível.</div>
+    </section>
+
+    <section id="dieta" class="section">
+      <h2>Dieta e cardápio rotativo</h2>
+      <div class="grid g2">
+        <div class="card">
+          <div class="profile"><h3>Bruno</h3><span class="pill">~1.900 kcal</span></div>
+          <p class="muted">Proteína alvo: 140–150 g/dia</p>
+        </div>
+        <div class="card">
+          <div class="profile"><h3>Bruna</h3><span class="pill">~1.500 kcal</span></div>
+          <p class="muted">Proteína alvo: 105–115 g/dia</p>
+        </div>
+      </div>
+
+      <div class="grid g2" style="margin-top:18px">
+        <div class="card meal-card">
+          <h3>Café da manhã — pré-treino</h3>
+          <ul>
+            <li><b>Opção A:</b> ovos + pão integral + fruta</li>
+            <li><b>Opção B:</b> iogurte + aveia + fruta</li>
+            <li><b>Opção C:</b> crepioca com cottage</li>
+          </ul>
+          <p class="muted"><b>Bruno:</b> 3 ovos / 2 fatias / 1 fruta.<br><b>Bruna:</b> 2 ovos / 1 fatia / 1 fruta pequena.</p>
+        </div>
+        <div class="card meal-card">
+          <h3>Lanche pós-treino</h3>
+          <ul>
+            <li>Iogurte + whey + banana</li>
+            <li>Sanduíche de frango/atum</li>
+            <li>Omelete pequena + fruta</li>
+          </ul>
+          <p class="muted"><b>Bruno:</b> 25–30 g whey.<br><b>Bruna:</b> 15–20 g whey.</p>
+        </div>
+        <div class="card meal-card">
+          <h3>Almoço</h3>
+          <p class="muted"><b>Bruno:</b> 150–170 g proteína + 100–130 g arroz + 80–100 g feijão + 250–350 g vegetais.</p>
+          <p class="muted"><b>Bruna:</b> 110–130 g proteína + 70–90 g arroz + 60–80 g feijão + 250–350 g vegetais.</p>
+        </div>
+        <div class="card meal-card">
+          <h3>Lanche da tarde</h3>
+          <ul>
+            <li>Iogurte + fruta</li>
+            <li>Sanduíche integral de frango/atum</li>
+            <li>Pipoca sem excesso de óleo + iogurte</li>
+            <li>Gelatina zero + iogurte proteico</li>
+          </ul>
+        </div>
+        <div class="card meal-card">
+          <h3>Jantar</h3>
+          <p class="muted"><b>Bruno:</b> 150–180 g proteína + 200–300 g batata ou legumes.</p>
+          <p class="muted"><b>Bruna:</b> 110–130 g proteína + 150–200 g batata ou legumes.</p>
+        </div>
+        <div class="card meal-card">
+          <h3>Alimentos de alto volume</h3>
+          <p class="muted">Abobrinha, chuchu, brócolis, couve-flor, pepino, tomate, repolho, alface, cenoura, berinjela, vagem, melancia, morango, mamão e sopas com bastante vegetal.</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:18px">
+        <h3>Cardápio semanal para repetir por 4 semanas</h3>
+        <table>
+          <thead><tr><th>Dia</th><th>Café</th><th>Almoço</th><th>Lanche</th><th>Jantar</th></tr></thead>
+          <tbody>
+            <tr><td>Seg</td><td>Ovos + pão + mamão</td><td>Frango + arroz + feijão + salada</td><td>Iogurte + whey</td><td>Patinho + batata + legumes</td></tr>
+            <tr><td>Ter</td><td>Iogurte + aveia + banana</td><td>Peixe + batata + salada</td><td>Sanduíche de frango</td><td>Frango + legumes</td></tr>
+            <tr><td>Qua</td><td>Crepioca + fruta</td><td>Patinho + arroz + feijão</td><td>Iogurte + fruta</td><td>Omelete + salada</td></tr>
+            <tr><td>Qui</td><td>Omelete + fruta</td><td>Frango + massa controlada + legumes</td><td>Pipoca + iogurte</td><td>Peixe + legumes</td></tr>
+            <tr><td>Sex</td><td>Ovos + pão</td><td>Lombo magro + arroz + feijão</td><td>Whey + fruta</td><td>Hambúrguer caseiro + batata</td></tr>
+            <tr><td>Sáb</td><td>Iogurte + aveia</td><td>Carne + arroz + feijão</td><td>Fruta + iogurte</td><td>Refeição flexível controlada</td></tr>
+            <tr><td>Dom</td><td>Omelete</td><td>Frango assado + acompanhamentos controlados</td><td>Iogurte</td><td>Sopa ou peixe</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="treino-bruno" class="section">
+      <h2>Treino Bruno — definição + foco superior</h2>
+      <div class="note">Cardio fracionado: 8 min leve no início + musculação + 15–20 min no final. Em terça e sexta, inserir bloco extra de 6 min moderado no meio do treino.</div>
+      <div class="grid g2" style="margin-top:18px">
+        <div class="card workout-day">
+          <h3>Segunda — Peito, ombro e tríceps</h3>
+          <div class="exercise"><span>Cardio leve</span><b>8 min</b></div>
+          <div class="exercise"><span>Supino reto</span><b>4×6–10</b></div>
+          <div class="exercise"><span>Supino inclinado</span><b>3×8–12</b></div>
+          <div class="exercise"><span>Desenvolvimento</span><b>3×8–10</b></div>
+          <div class="exercise"><span>Elevação lateral</span><b>4×12–15</b></div>
+          <div class="exercise"><span>Tríceps pulley</span><b>3×10–15</b></div>
+          <div class="exercise"><span>Tríceps francês</span><b>3×10–12</b></div>
+          <div class="exercise"><span>Cardio final</span><b>18 min</b></div>
+        </div>
+        <div class="card workout-day">
+          <h3>Terça — Costas, bíceps e core</h3>
+          <div class="exercise"><span>Cardio leve</span><b>8 min</b></div>
+          <div class="exercise"><span>Puxada frontal</span><b>4×8–12</b></div>
+          <div class="exercise"><span>Remada baixa</span><b>4×8–12</b></div>
+          <div class="exercise"><span>Remada unilateral</span><b>3×10</b></div>
+          <div class="exercise"><span>Cardio intermediário</span><b>6 min</b></div>
+          <div class="exercise"><span>Rosca direta</span><b>3×10–12</b></div>
+          <div class="exercise"><span>Rosca martelo</span><b>3×10–12</b></div>
+          <div class="exercise"><span>Prancha + abdominal cabo</span><b>3 séries</b></div>
+          <div class="exercise"><span>Cardio final</span><b>15 min</b></div>
+        </div>
+        <div class="card workout-day">
+          <h3>Quarta — Pernas + core</h3>
+          <div class="exercise"><span>Cardio leve</span><b>8 min</b></div>
+          <div class="exercise"><span>Agachamento / leg press</span><b>4×8–12</b></div>
+          <div class="exercise"><span>Stiff</span><b>3×8–12</b></div>
+          <div class="exercise"><span>Mesa flexora</span><b>3×10–12</b></div>
+          <div class="exercise"><span>Extensora</span><b>3×12</b></div>
+          <div class="exercise"><span>Panturrilha</span><b>4×15</b></div>
+          <div class="exercise"><span>Core</span><b>10 min</b></div>
+          <div class="exercise"><span>Cardio final</span><b>15 min</b></div>
+        </div>
+        <div class="card workout-day">
+          <h3>Quinta — Superior completo</h3>
+          <div class="exercise"><span>Cardio leve</span><b>8 min</b></div>
+          <div class="exercise"><span>Supino inclinado</span><b>4×6–10</b></div>
+          <div class="exercise"><span>Puxada</span><b>4×8–10</b></div>
+          <div class="exercise"><span>Remada</span><b>3×8–10</b></div>
+          <div class="exercise"><span>Desenvolvimento</span><b>3×8–10</b></div>
+          <div class="exercise"><span>Elevação lateral</span><b>3×15</b></div>
+          <div class="exercise"><span>Rosca + tríceps</span><b>3×12</b></div>
+          <div class="exercise"><span>Cardio final</span><b>20 min</b></div>
+        </div>
+        <div class="card workout-day">
+          <h3>Sexta — Ombros, braços e definição</h3>
+          <div class="exercise"><span>Cardio leve</span><b>8 min</b></div>
+          <div class="exercise"><span>Peitoral máquina</span><b>3×12</b></div>
+          <div class="exercise"><span>Remada máquina</span><b>3×12</b></div>
+          <div class="exercise"><span>Elevação lateral</span><b>4×15</b></div>
+          <div class="exercise"><span>Cardio intermediário</span><b>6 min</b></div>
+          <div class="exercise"><span>Bíceps + tríceps</span><b>4 superséries</b></div>
+          <div class="exercise"><span>Core</span><b>8 min</b></div>
+          <div class="exercise"><span>Cardio final</span><b>20 min</b></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="treino-bruna" class="section">
+      <h2>Treino Bruna — definição + foco inferior</h2>
+      <div class="note">Estrutura: 8 min cardio leve no início + musculação + 15–20 min ao final. Evitar transformar todos os dias em treino pesado de pernas; 3 inferiores + 2 superiores melhora recuperação e definição.</div>
+      <div class="grid g2" style="margin-top:18px">
+        <div class="card workout-day">
+          <h3>Segunda — Glúteos + quadríceps</h3>
+          <div class="exercise"><span>Cardio leve</span><b>8 min</b></div>
+          <div class="exercise"><span>Hip thrust</span><b>4×8–12</b></div>
+          <div class="exercise"><span>Agachamento</span><b>4×8–12</b></div>
+          <div class="exercise"><span>Leg press</span><b>3×10–12</b></div>
+          <div class="exercise"><span>Extensora</span><b>3×12–15</b></div>
+          <div class="exercise"><span>Abdutora</span><b>3×15–20</b></div>
+          <div class="exercise"><span>Cardio final</span><b>15 min</b></div>
+        </div>
+        <div class="card workout-day">
+          <h3>Terça — Superior + core</h3>
+          <div class="exercise"><span>Cardio leve</span><b>8 min</b></div>
+          <div class="exercise"><span>Puxada frontal</span><b>3×10–12</b></div>
+          <div class="exercise"><span>Remada</span><b>3×10–12</b></div>
+          <div class="exercise"><span>Peitoral máquina</span><b>3×10–12</b></div>
+          <div class="exercise"><span>Elevação lateral</span><b>3×12–15</b></div>
+          <div class="exercise"><span>Core</span><b>10 min</b></div>
+          <div class="exercise"><span>Cardio final</span><b>20 min</b></div>
+        </div>
+        <div class="card workout-day">
+          <h3>Quarta — Posterior + glúteos</h3>
+          <div class="exercise"><span>Cardio leve</span><b>8 min</b></div>
+          <div class="exercise"><span>Stiff</span><b>4×8–12</b></div>
+          <div class="exercise"><span>Hip thrust</span><b>3×10–12</b></div>
+          <div class="exercise"><span>Mesa flexora</span><b>4×10–12</b></div>
+          <div class="exercise"><span>Afundo</span><b>3×10</b></div>
+          <div class="exercise"><span>Coice no cabo</span><b>3×12–15</b></div>
+          <div class="exercise"><span>Cardio final</span><b>15 min</b></div>
+        </div>
+        <div class="card workout-day">
+          <h3>Quinta — Superior + core + cardio</h3>
+          <div class="exercise"><span>Cardio leve</span><b>8 min</b></div>
+          <div class="exercise"><span>Remada</span><b>3×10–12</b></div>
+          <div class="exercise"><span>Puxada</span><b>3×10–12</b></div>
+          <div class="exercise"><span>Desenvolvimento</span><b>3×10</b></div>
+          <div class="exercise"><span>Elevação lateral</span><b>3×15</b></div>
+          <div class="exercise"><span>Abdominal</span><b>3×15</b></div>
+          <div class="exercise"><span>Cardio final</span><b>25 min</b></div>
+        </div>
+        <div class="card workout-day">
+          <h3>Sexta — Glúteos + quadríceps</h3>
+          <div class="exercise"><span>Cardio leve</span><b>8 min</b></div>
+          <div class="exercise"><span>Hip thrust</span><b>4×8–12</b></div>
+          <div class="exercise"><span>Agachamento búlgaro</span><b>3×8–10</b></div>
+          <div class="exercise"><span>Leg press</span><b>3×10–12</b></div>
+          <div class="exercise"><span>Extensora</span><b>3×12–15</b></div>
+          <div class="exercise"><span>Abdutora</span><b>3×15–20</b></div>
+          <div class="exercise"><span>Cardio final</span><b>18 min</b></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="calendario" class="section">
+      <h2>Calendário compartilhado + agente de IA</h2>
+      <div class="grid g3">
+        <div class="card"><h3>07:00 — Acordar</h3><p class="muted">Lembrete discreto: água + iniciar manhã sem redes.</p></div>
+        <div class="card"><h3>07:10 — Devocional</h3><p class="muted">Agente pode sugerir leitura bíblica, oração e registrar conclusão.</p></div>
+        <div class="card"><h3>07:35 — Café</h3><p class="muted">Mostrar opção de café do dia e porção individual de cada um.</p></div>
+        <div class="card"><h3>08:00 — Treino</h3><p class="muted">Abrir treino correto conforme dia e pessoa, com cronômetro e cardio.</p></div>
+        <div class="card"><h3>09:20 — Pós-treino</h3><p class="muted">Lembrete de lanche + água + marcação do treino como concluído.</p></div>
+        <div class="card"><h3>12:30 — Almoço</h3><p class="muted">Mostrar quantidade individual de proteína, arroz, feijão e vegetais.</p></div>
+        <div class="card"><h3>16:30 — Lanche</h3><p class="muted">Escolher entre 3 opções com calorias equivalentes.</p></div>
+        <div class="card"><h3>19:30 — Jantar</h3><p class="muted">Recomendação baseada no que já foi consumido no dia.</p></div>
+        <div class="card"><h3>22:15 — Check-in</h3><p class="muted">Passos, água, treino, alimentação, peso opcional e preparo do dia seguinte.</p></div>
+      </div>
+      <div class="note success" style="margin-top:18px">
+        O agente não deve apenas lembrar horários. Ele deve contextualizar: “Hoje é quarta, Bruno treina pernas + core; Bruna posterior + glúteos. O almoço de hoje pode ser patinho, arroz, feijão e salada. Vocês estão com 6.200 passos; faltam ~2.800 para a meta mínima.”
+      </div>
+    </section>
+
+    <section id="progresso" class="section">
+      <h2>Controle de progresso</h2>
+      <div class="grid g2">
+        <div class="card">
+          <h3>Check-in semanal</h3>
+          <div class="checks">
+            <label><input type="checkbox"> Peso em jejum</label>
+            <label><input type="checkbox"> Circunferência abdominal</label>
+            <label><input type="checkbox"> Foto frontal</label>
+            <label><input type="checkbox"> Foto lateral</label>
+            <label><input type="checkbox"> Média de passos</label>
+            <label><input type="checkbox"> Treinos concluídos</label>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Regra de ajuste</h3>
+          <p class="muted">Não alterar calorias por causa de 1 ou 2 dias de balança. Avaliar tendência de 14 dias, cintura, fome, sono e performance.</p>
+          <div class="note">Se peso e cintura não mudarem por 2 semanas: primeiro aumentar passos em ~1.500–2.000/dia. Depois, se necessário, revisar calorias.</div>
+        </div>
+      </div>
+      <div class="note alert" style="margin-top:18px">Este sistema é um planejamento geral de hábitos, alimentação e treino. Quem tiver condição clínica, gravidez, transtorno alimentar, doença renal, diabetes, lesão ou uso de medicação relevante deve individualizar o plano com profissional de saúde.</div>
+    </section>
+
+    <div class="footer">Projeto 30 Dias • Bruno & Bruna • versão inicial para evolução com agente de IA</div>
+  </main>
+</div>
+
+<script>
+  const buttons = document.querySelectorAll("nav button");
+  const sections = document.querySelectorAll(".section");
+  buttons.forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      buttons.forEach(b=>b.classList.remove("active"));
+      sections.forEach(s=>s.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById(btn.dataset.target).classList.add("active");
+      window.scrollTo({top:0,behavior:"smooth"});
+    });
+  });
+</script>
+</body>
+</html>
